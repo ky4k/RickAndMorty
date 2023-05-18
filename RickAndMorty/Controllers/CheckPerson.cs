@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RickAndMorty.Models;
+using System.Text.Json.Serialization;
 
 namespace RickAndMorty.Controllers
 {
@@ -26,7 +27,7 @@ namespace RickAndMorty.Controllers
             Character? person = await _httpClient.GetFromJsonAsync<Character>(url);
             if (person != null)
             {
-                return person;
+                return JsonResult(person);
             }
             else
                 return NotFound();

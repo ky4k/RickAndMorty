@@ -6,9 +6,9 @@
         public string? name { get; set; }
         public string? type { get; set; }
         public string? dimension { get; set; }
-        public List<Character>? characters { get; set; } //Позже можно попробовать изменить на string
+        public List<Character>? residents { get; set; } //Take Characters' links
         public string? url { get; set; }
         public string? created { get; set; }
     }
 }
-}
+

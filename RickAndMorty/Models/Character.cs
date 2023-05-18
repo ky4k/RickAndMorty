@@ -13,10 +13,10 @@ namespace RickAndMorty.Models
         public CharacterOrigin? origin { get; set; }
         public CharacterLocation? location { get; set; }
         public string? image { get; set; }
-        public List<Episode>? episode { get; set; }//Позже можно попробовать изменить на string
+        public List<Episode>? episode { get; set; }//Take a Episodes' links 
 
         //[ForeignKey("EpisodeAndLocationIntoKey")]
-        public string? url { get; set; }//Внешний ключ
+        public string? url { get; set; }//Foreign key
         public string? created { get; set; }
     }
 }

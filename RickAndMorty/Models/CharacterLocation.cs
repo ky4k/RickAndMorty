@@ -1,9 +1,11 @@
-﻿namespace RickAndMorty.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace RickAndMorty.Models
 {
-    //[Owned]
+    [Owned]
     public class CharacterLocation
     {
-        public string name { get; set; }
-        public string url { get; set; }
+        public string? name { get; set; }
+        public string? url { get; set; }
     }
 }
