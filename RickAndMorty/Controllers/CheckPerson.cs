@@ -1,6 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RickAndMorty.Models;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using System.Net.Http.Json;
+using System;
+using System.Security.Cryptography.Xml;
+using System.Data;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace RickAndMorty.Controllers
 {
@@ -20,24 +29,19 @@ namespace RickAndMorty.Controllers
         }
 
         [HttpPost("check-person")]
-        public async Task<IActionResult> CheckPerson(Character request)
+        public async Task<IActionResult> CheckPerson(int id)
         {
-            string url = $"https://rickandmortyapi.com/api/character/?name={request.name}";
-            //Отправить завпрос
-            Character? person = await _httpClient.GetFromJsonAsync<Character>(url);
-            if (person != null)
+            string url = $"https://rickandmortyapi.com/api/episode/{id}";
+            HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
+
+            if (response.IsSuccessStatusCode)
             {
-                return JsonResult(person);
+                string Response = await response.Content.ReadAsStringAsync();//convert in string type
+                Episode episode = JsonConvert.DeserializeObject<Episode>(Response);//serialize in a object
+                return Ok(episode);
             }
             else
-                return NotFound();
-
+                return BadRequest("dfs");
         }
-
-        //[HttpGet("person")]
-        //public async Task<IActionResult> GetPerson(string name)
-        //{
-
-        //}
     }
 }

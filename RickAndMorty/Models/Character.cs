@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace RickAndMorty.Models
 {
@@ -13,10 +14,8 @@ namespace RickAndMorty.Models
         public CharacterOrigin? origin { get; set; }
         public CharacterLocation? location { get; set; }
         public string? image { get; set; }
-        public List<Episode>? episode { get; set; }//Take a Episodes' links 
-
-        //[ForeignKey("EpisodeAndLocationIntoKey")]
-        public string? url { get; set; }//Foreign key
+        public string[]? episode { get; set; }
+        public string? url { get; set; }
         public string? created { get; set; }
     }
 }

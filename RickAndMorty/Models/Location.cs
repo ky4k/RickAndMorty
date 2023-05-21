@@ -6,7 +6,7 @@
         public string? name { get; set; }
         public string? type { get; set; }
         public string? dimension { get; set; }
-        public List<Character>? residents { get; set; } //Take Characters' links
+        public string[]? residents { get; set; } 
         public string? url { get; set; }
         public string? created { get; set; }
     }
