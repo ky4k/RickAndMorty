@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RickAndMorty.Models
 {
@@ -8,7 +9,7 @@ namespace RickAndMorty.Models
         public string? name { get; set; }
         public string? air_date { get; set; }
         public string? episode { get; set; }
-        public string[] characters { get; set; }
+        public List<string>? characters { get; set; }
         public string? url { get; set; }
         public string? created { get; set; }
 

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RickAndMorty.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
+string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
 var app = builder.Build();
 
