@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RickAndMorty.Data;
+
 namespace RickAndMorty.Models
 {
-    public class ApplicationContext:DbContext
+    public class ApplicationContext : DbContext
     {
         public DbSet<Character> Characters { get; set; }
         public DbSet<Episode> Episodes { get; set; }
@@ -10,13 +13,8 @@ namespace RickAndMorty.Models
             : base(options)
         {
             Database.EnsureDeleted();
-            Database.EnsureCreated(); 
+            Database.EnsureCreated();
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Character>().HasKey(c => new { c.id});
-            modelBuilder.Entity<Episode>().HasKey(e => new { e.id });
-            modelBuilder.Entity<Location>().HasKey(l => new { l.id });
-        }
+
     }
 }

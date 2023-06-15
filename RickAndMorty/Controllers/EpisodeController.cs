@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RickAndMorty.Data;
 using RickAndMorty.Models;
+using RickAndMorty.Operations;
 
 namespace RickAndMorty.Controllers
 {
@@ -37,19 +39,24 @@ namespace RickAndMorty.Controllers
         public async Task<IActionResult> CheckLocation()
         {
             string url = $"https://rickandmortyapi.com/api/episode";
-            HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
+            //HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
 
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var jsonObject = JObject.Parse(responseContent);
-                var resultsArray = jsonObject["results"].ToString();
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    var responseContent = await response.Content.ReadAsStringAsync();
+            //    var jsonObject = JObject.Parse(responseContent);
+            //    var resultsArray = jsonObject["results"].ToString();
+            //    var episodes = JsonConvert.DeserializeObject<List<Episode>>(resultsArray);
 
-                var episodes = JsonConvert.DeserializeObject<List<Episode>>(resultsArray);
-                return Ok(episodes);
-            }
-            else
-                return BadRequest("dfs");
+            //    db.Episodes.AddRange(episodes);
+            //    await db.SaveChangesAsync();
+            //    return Ok(episodes);
+            //}
+            //else
+            //    return BadRequest("dfs");
+            Requester<Episode> requester = new Requester<Episode>();
+            var result = await requester.GetResponseAsync(url);
+            return Ok(result);
         }
     }
 }
