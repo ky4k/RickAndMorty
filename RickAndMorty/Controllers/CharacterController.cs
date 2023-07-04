@@ -10,11 +10,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RickAndMorty.Data;
 using Azure;
 using System.Net.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using RickAndMorty.Operations;
+using RickAndMorty.Interfaces;
 
 namespace RickAndMorty.Controllers
 {
@@ -22,11 +22,12 @@ namespace RickAndMorty.Controllers
     [Route("api/v1")]
     public class CheckPersonController : ControllerBase
     {
-        private readonly HttpClient _httpClient;
-        private ApplicationContext db;
-        public CheckPersonController(ApplicationContext ap)
+        // Подкллючаем DI. Создаем поля інтерфейсов и приватные поля и используем дальше их.
+        HttpClient _httpClient = new HttpClient();//temp
+        private IDataOperation db;
+        public CheckPersonController(IDataOperation _db)
         {
-            db = ap;
+            db = _db;
             _httpClient = new HttpClient();
         }
 
@@ -50,27 +51,10 @@ namespace RickAndMorty.Controllers
         public async Task<IActionResult> CheckLocation()
         {
             string url = $"https://rickandmortyapi.com/api/character";
-            //HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var responseContent = await response.Content.ReadAsStringAsync();
-            //    var jsonObject = JObject.Parse(responseContent);
-            //    var resultsArray = jsonObject["results"].ToString();
-            //    var characters = JsonConvert.DeserializeObject<List<Character>>(resultsArray);
-            //    дале перебрать массив ссылок, те ссылки которые совпвдвют - добавляем в соответстувующее связи
-            //    await db.Characters.AddRangeAsync(characters);
-            //    await db.SaveChangesAsync();
-
-            //    return Ok(characters);
-            //}
-            //else
-            //    return BadRequest("dfs");
             Requester<Character> requester = new Requester<Character>();
             var result = await requester.GetResponseAsync(url);
+            await db.UpdateData();
             return Ok(result);
         }
     }
 }
-//Нужно добавить такие функции:
-//1)Выдача 

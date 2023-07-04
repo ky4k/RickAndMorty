@@ -8,6 +8,7 @@ namespace RickAndMorty.Operations
 {
     public class Requester<T>:IRequester<T>
     {
+        //добавить конструктор  HttpClient
         public async Task<List<T>> GetResponseAsync(string url)
         {
             HttpClient _httpClient = new HttpClient();

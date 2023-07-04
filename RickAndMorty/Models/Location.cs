@@ -14,7 +14,7 @@ namespace RickAndMorty.Models
         public string? url { get; set; }
         public string? created { get; set; }
         //one-to-many [Location-Character]
-        public List<Character> Characters { get; set; }
+        public List<Character>? Characters { get; set; } = new List<Character>();
     }
 }
 

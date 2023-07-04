@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using RickAndMorty.Interfaces;
 using RickAndMorty.Models;
+using RickAndMorty.Operations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+builder.Services.AddScoped<IDataOperation, DBclass>();
 
 var app = builder.Build();
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RickAndMorty.Data;
 using RickAndMorty.Models;
 using RickAndMorty.Operations;
 

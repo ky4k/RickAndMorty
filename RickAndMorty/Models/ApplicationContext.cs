@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RickAndMorty.Data;
-
 namespace RickAndMorty.Models
 {
     public class ApplicationContext : DbContext
@@ -14,6 +12,30 @@ namespace RickAndMorty.Models
         {
             Database.EnsureDeleted();
             Database.EnsureCreated();
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Character>()
+                .HasMany(c => c.EpisodesList)
+                .WithMany(e => e.CharactersList)
+                .UsingEntity(j => j.ToTable("CharacterEpisode"));
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.LocationList)
+                .WithMany(l => l.Characters)
+                .HasForeignKey(c => c.LocationId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Episode>()
+                .HasMany(e => e.CharactersList)
+                .WithMany(c => c.EpisodesList)
+                .UsingEntity(j => j.ToTable("CharacterEpisode"));
+
+            modelBuilder.Entity<Location>()
+                .HasMany(l => l.Characters)
+                .WithOne(c => c.LocationList)
+                .HasForeignKey(c => c.LocationId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
     }

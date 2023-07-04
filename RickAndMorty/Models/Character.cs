@@ -22,9 +22,9 @@ namespace RickAndMorty.Models
         public string? url { get; set; }
         public string? created { get; set; }
         //many-to-many[Character-Episode]
-        public List<Episode> EpisodesList { get; set; }
+        public List<Episode>? EpisodesList { get; set; }=new List<Episode>();
         //many-to-one[Chracter-Location]
-        public int LocationId { get; set; }
-        public Location? LocationList { get; set; }
+        public int? LocationId { get; set; }
+        public Location? LocationList { get; set; }//name was LocationList
     }
 }

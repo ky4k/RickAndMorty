@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RickAndMorty.Data;
 using RickAndMorty.Models;
 using RickAndMorty.Operations;
 using System.Net.Http;
