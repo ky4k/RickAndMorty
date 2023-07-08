@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RickAndMorty.Interfaces;
 using RickAndMorty.Models;
 using RickAndMorty.Operations;
 
@@ -10,52 +11,86 @@ namespace RickAndMorty.Controllers
     [Route("api/v1")]
     public class EpisodeController : Controller
     {
-        private readonly HttpClient _httpClient;
-        private ApplicationContext db;
-        public EpisodeController(ApplicationContext ap)
+        private IEpisodeRequester er;
+        public EpisodeController(IEpisodeRequester er)
         {
-            db = ap;
-            _httpClient = new HttpClient();
-        }
-
-        [HttpPost("check-episode")]
-        public async Task<IActionResult> CheckEpisode(int id)
-        {
-            string url = $"https://rickandmortyapi.com/api/episode/{id}";
-            HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
-
-            if (response.IsSuccessStatusCode)
-            {
-                string Response = await response.Content.ReadAsStringAsync();//convert in string type
-                Episode episode = JsonConvert.DeserializeObject<Episode>(Response);//deserialize in a object
-                return Ok(episode);
-            }
-            else
-                return BadRequest("dfs");
+            this.er = er;
         }
 
         [HttpGet("all-episodes")]
-        public async Task<IActionResult> CheckLocation()
+        public async Task<IActionResult> AllEpisodes()
         {
-            string url = $"https://rickandmortyapi.com/api/episode";
-            //HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
+            try
+            {
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var responseContent = await response.Content.ReadAsStringAsync();
-            //    var jsonObject = JObject.Parse(responseContent);
-            //    var resultsArray = jsonObject["results"].ToString();
-            //    var episodes = JsonConvert.DeserializeObject<List<Episode>>(resultsArray);
-
-            //    db.Episodes.AddRange(episodes);
-            //    await db.SaveChangesAsync();
-            //    return Ok(episodes);
-            //}
-            //else
-            //    return BadRequest("dfs");
-            Requester<Episode> requester = new Requester<Episode>();
-            var result = await requester.GetResponseAsync(url);
-            return Ok(result);
+                var result = await er.GetAllEpisodes();
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("multiple-episodes")]
+        public async Task<IActionResult> MultiplyEpisodes(List<int> list)
+        {
+            try
+            {
+                var result = await er.GetEpisodesByIDlist(list);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("episode-id")]
+        public async Task<IActionResult> EpisodeName(string name)
+        {
+            try
+            {
+                var result = await er.GetEpisode(name);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text bed news
+                return Content(ex.Message);
+            }
+        }
+        [HttpPost("episode-name")]
+        public async Task<IActionResult> EpisodeID(int id)
+        {
+            try
+            {
+                var result = await er.GetEpisode(id);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db looking on status code
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text 
+                return Content(ex.Message);
+            }
         }
     }
 }

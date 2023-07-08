@@ -14,7 +14,7 @@ namespace RickAndMorty.Controllers
         {
             db = _db;
         }
-        [HttpPost("updatedb")]
+        [HttpPut("updatedb")]
         public async Task UpdateDB()
         {
             await db.UpdateData();

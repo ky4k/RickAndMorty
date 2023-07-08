@@ -18,8 +18,8 @@ namespace RickAndMorty.Operations
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var jsonObject = JObject.Parse(responseContent);
                 var resultsArray = jsonObject["results"].ToString();
-                var locations = JsonConvert.DeserializeObject<List<T>>(resultsArray);
-                return locations;
+                var result = JsonConvert.DeserializeObject<List<T>>(resultsArray);
+                return result;
             }
             else
             {

@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RickAndMorty.Interfaces;
 using RickAndMorty.Models;
 using RickAndMorty.Operations;
+using System.Collections.Generic;
 using System.Net.Http;
 
 namespace RickAndMorty.Controllers
@@ -13,54 +15,85 @@ namespace RickAndMorty.Controllers
     [Route("api/v1")]
     public class LocationController : Controller
     {
-        private readonly HttpClient _httpClient;
-        private ApplicationContext db;
-        public LocationController(ApplicationContext ap)
+        private ILocationRequester lr;
+        public LocationController(ILocationRequester lr)
         {
-            db = ap;
-            _httpClient = new HttpClient();
-        }
-        [HttpPost("check-location")]
-        public async Task<IActionResult> CheckLocation(int id)
-        {
-            string url = $"https://rickandmortyapi.com/api/location/{id}";
-            HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
-
-            if (response.IsSuccessStatusCode)
-            {
-                string Response = await response.Content.ReadAsStringAsync();//convert in string type
-                Location location = JsonConvert.DeserializeObject<Location>(Response);//deserialize in a object
-                return Ok(location);
-            }
-            else
-                return BadRequest("dfs");
-
-
+            this.lr = lr;
         }
 
         [HttpGet("all-locations")]
-        public async Task<IActionResult> CheckLocation()
+        public async Task<IActionResult> Alllocations()
         {
-            string url = $"https://rickandmortyapi.com/api/location";
-            //HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var responseContent = await response.Content.ReadAsStringAsync();
-            //    var jsonObject = JObject.Parse(responseContent);
-            //    var resultsArray = jsonObject["results"].ToString();
-            //    var locations = JsonConvert.DeserializeObject<List<Location>>(resultsArray);
-
-            //    db.Locations.AddRange(locations);
-
-            //    await db.SaveChangesAsync();
-            //    return Ok(locations);
-            //}
-            //else
-            //    return BadRequest("dfs");
-            Requester<Location> requester= new Requester<Location>();
-            var result = await requester.GetResponseAsync(url);
-            return Ok(result);
+            try
+            {
+                var result = await lr.GetAllLocations();
+                return Ok(result);
+            }
+            catch(HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+        }
+        [HttpPost("multiple-locations")]
+        public async Task<IActionResult> MultiplyLocations(List<int> list)
+        {
+            try
+            {
+                var result = await lr.GetLocationsByIDlist(list);
+                return Ok(result);
+            }
+            catch(HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("location-id")]
+        public async Task<IActionResult> LocationName(string name)
+        {
+            try
+            {
+                var result = await lr.GetLocation(name);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex) 
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text bed news
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("location-name")]
+        public async Task<IActionResult> EpisodeID(int id)
+        {
+            try
+            {
+                var result = await lr.GetLocation(id);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text 
+                return Content(ex.Message);
+            }
         }
     }
 }

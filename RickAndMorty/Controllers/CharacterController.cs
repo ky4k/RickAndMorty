@@ -20,41 +20,130 @@ namespace RickAndMorty.Controllers
 {
     [ApiController]
     [Route("api/v1")]
-    public class CheckPersonController : ControllerBase
+    public class CharacteerController : ControllerBase
     {
-        // Подкллючаем DI. Создаем поля інтерфейсов и приватные поля и используем дальше их.
-        HttpClient _httpClient = new HttpClient();//temp
-        private IDataOperation db;
-        public CheckPersonController(IDataOperation _db)
+        
+        private ICharacterRequester cr;
+        public CharacteerController(ICharacterRequester cr)
         {
-            db = _db;
-            _httpClient = new HttpClient();
+            this.cr = cr;
         }
 
-        [HttpPost("check-person")]
-        public async Task<IActionResult> CheckPerson(int id)
+        [HttpPost("multiple-characters")]
+        public async Task<IActionResult> ListSomeCharacters(List<int> list)
         {
-            string url = $"https://rickandmortyapi.com/api/character/{id}";
-            HttpResponseMessage response = await _httpClient.GetAsync(url);//GET request and get response
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string Response = await response.Content.ReadAsStringAsync();//convert in string type
-                Character character = JsonConvert.DeserializeObject<Character>(Response);//deserialize in a object
-                return Ok(character);
+                var result = await cr.GetCharactersByIDlist(list);
+                return Ok(result);
             }
-            else
-                return BadRequest("dfs");
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
         [HttpGet("all-characters")]
-        public async Task<IActionResult> CheckLocation()
+        public async Task<IActionResult> AllCharacters()
         {
-            string url = $"https://rickandmortyapi.com/api/character";
-            Requester<Character> requester = new Requester<Character>();
-            var result = await requester.GetResponseAsync(url);
-            await db.UpdateData();
-            return Ok(result);
+            try
+            {
+                var result = await cr.GetAllCharacters();
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
         }
+
+        [HttpGet("character-id")]
+        public async Task<IActionResult> CharacteID(int id)
+        {
+            try
+            {
+                var result = await cr.GetCharacter(id);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db looking on status code
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text 
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("chracter-name")]
+        public async Task<IActionResult> CharacteName(string name)
+        {
+            try
+            {
+                var result = await cr.GetCharacter(name);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text bed news
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("chracter-name&status")]
+        public async Task<IActionResult> CharacteNameandStatus(string name, string status)
+        {
+            try
+            {
+                var result = await cr.GetCharacterStatus(name, status);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text or give able to write new info
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("chracter-name&gender")]
+        public async Task<IActionResult> CharacteNameandGender(string name, string gender)
+        {
+            try
+            {
+                var result = await cr.GetCharacteGender(name, gender);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text or give able to write new info
+                return Content(ex.Message);
+            }
+        }
+
+
     }
 }
