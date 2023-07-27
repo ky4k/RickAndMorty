@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
-//builder.Services.AddScoped<IDataOperation, DBclass>();
+builder.Services.AddScoped<IDataOperation, DBclass>();
 builder.Services.AddScoped<ICharacterRequester, CharacterRepository>();
 builder.Services.AddScoped<ILocationRequester, LocationRepository>();
 builder.Services.AddScoped<IEpisodeRequester, EpisodeRepository>();
