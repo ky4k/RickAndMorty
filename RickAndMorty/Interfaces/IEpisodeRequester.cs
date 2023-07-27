@@ -6,7 +6,8 @@ namespace RickAndMorty.Interfaces
     {
         Task<List<Episode>> GetAllEpisodes();
         Task<List<Episode>> GetEpisodesByIDlist(List<int> listID);
-        Task<Episode> GetEpisode(int id);
-        Task<Episode> GetEpisode(string name);
+        Task<Episode> GetEpisodeByID(int id);
+        Task<List<Episode>> GetEpisodeByName(string name);
+        Task<List<Episode>> GetEpisodeByEpisode(string episode);
     }
 }

@@ -4,9 +4,11 @@ namespace RickAndMorty.Interfaces
 {
     public interface ILocationRequester
     {
-        Task<List<Location>> GetAllLocations();
-        Task<List<Location>> GetLocationsByIDlist(List<int> listID);
-        Task<Location> GetLocation(int id);
-        Task<Location> GetLocation(string name);
+        Task<List<Location>> GetAll();
+        Task<List<Location>> GetByIDlist(List<int> listID);
+        Task<Location> GetByID(int id);
+        Task<List<Location>> GetByName(string name);
+        Task<List<Location>> GetByType(string type);
+        Task<List<Location>> GetByDimension(string dimension);
     }
 }

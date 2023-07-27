@@ -32,7 +32,7 @@ namespace RickAndMorty.Controllers
                 return Content(ex.Message);
             }
         }
-        [HttpGet("multiple-episodes")]
+        [HttpPost("multiple-episodes")]
         public async Task<IActionResult> MultiplyEpisodes(List<int> list)
         {
             try
@@ -54,12 +54,12 @@ namespace RickAndMorty.Controllers
                 return Content(ex.Message);
             }
         }
-        [HttpGet("episode-id")]
+        [HttpGet("episode-name")]
         public async Task<IActionResult> EpisodeName(string name)
         {
             try
             {
-                var result = await er.GetEpisode(name);
+                var result = await er.GetEpisodeByName(name);
                 return Ok(result);
             }
             catch (HttpRequestException ex)
@@ -73,12 +73,31 @@ namespace RickAndMorty.Controllers
                 return Content(ex.Message);
             }
         }
-        [HttpPost("episode-name")]
+        [HttpPost("episode-id")]
         public async Task<IActionResult> EpisodeID(int id)
         {
             try
             {
-                var result = await er.GetEpisode(id);
+                var result = await er.GetEpisodeByID(id);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db looking on status code
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text 
+                return Content(ex.Message);
+            }
+        }
+        [HttpPost("episode")]
+        public async Task<IActionResult> Episode(string episode)
+        {
+            try
+            {
+                var result = await er.GetEpisodeByEpisode(episode);
                 return Ok(result);
             }
             catch (HttpRequestException ex)

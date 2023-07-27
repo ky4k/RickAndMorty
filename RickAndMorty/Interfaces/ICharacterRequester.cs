@@ -4,12 +4,14 @@ namespace RickAndMorty.Interfaces
 {
     public interface ICharacterRequester
     {
-        Task<List<Character>> GetAllCharacters();
-        Task<List<Character>> GetCharactersByIDlist(List<int> listID);
-        Task<Character> GetCharacter(int id);
-        Task<Character> GetCharacter(string name);
-        Task<Character> GetCharacterStatus(string name, string status);
-        Task<Character> GetCharacteGender(string name, string gender);
+        Task<List<Character>> GetAll();
+        Task<List<Character>> GetByIDlist(List<int> listID);
+        Task<Character> GetID(int id);
+        Task<List<Character>> GetByName(string name);
+        Task<List<Character>> GetCharacterStatus(string name, string status);
+        Task<List<Character>> GetCharacterBySpecies(string species);
+        Task<List<Character>> GetCharacterByType(string type);
+        Task<List<Character>> GetCharacteGender(string name, string gender);
 
 
     }

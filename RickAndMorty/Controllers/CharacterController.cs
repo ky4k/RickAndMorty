@@ -15,6 +15,7 @@ using System.Net.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using RickAndMorty.Operations;
 using RickAndMorty.Interfaces;
+using RickAndMorty.Repository;
 
 namespace RickAndMorty.Controllers
 {
@@ -34,7 +35,7 @@ namespace RickAndMorty.Controllers
         {
             try
             {
-                var result = await cr.GetCharactersByIDlist(list);
+                var result = await cr.GetByIDlist(list);
                 return Ok(result);
             }
             catch (HttpRequestException ex)
@@ -57,7 +58,7 @@ namespace RickAndMorty.Controllers
         {
             try
             {
-                var result = await cr.GetAllCharacters();
+                var result = await cr.GetAll();
                 return Ok(result);
             }
             catch (HttpRequestException ex)
@@ -72,7 +73,7 @@ namespace RickAndMorty.Controllers
         {
             try
             {
-                var result = await cr.GetCharacter(id);
+                var result = await cr.GetID(id);
                 return Ok(result);
             }
             catch (HttpRequestException ex)
@@ -91,7 +92,7 @@ namespace RickAndMorty.Controllers
         {
             try
             {
-                var result = await cr.GetCharacter(name);
+                var result = await cr.GetByName(name);
                 return Ok(result);
             }
             catch (HttpRequestException ex)
@@ -111,6 +112,44 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await cr.GetCharacterStatus(name, status);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text or give able to write new info
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("chracter-species")]
+        public async Task<IActionResult> CharacterSpicies(string species)
+        {
+            try
+            {
+                var result = await cr.GetCharacterBySpecies(species);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text or give able to write new info
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("chracter-type")]
+        public async Task<IActionResult> CharacterType(string type)
+        {
+            try
+            {
+                var result = await cr.GetCharacterByType(type);
                 return Ok(result);
             }
             catch (HttpRequestException ex)

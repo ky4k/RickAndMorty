@@ -20,6 +20,7 @@ builder.Services.AddScoped<ICharacterRequester, CharacterRepository>();
 builder.Services.AddScoped<ILocationRequester, LocationRepository>();
 builder.Services.AddScoped<IEpisodeRequester, EpisodeRepository>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

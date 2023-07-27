@@ -22,11 +22,11 @@ namespace RickAndMorty.Controllers
         }
 
         [HttpGet("all-locations")]
-        public async Task<IActionResult> Alllocations()
+        public async Task<IActionResult> AllLocations()
         {
             try
             {
-                var result = await lr.GetAllLocations();
+                var result = await lr.GetAll();
                 return Ok(result);
             }
             catch(HttpRequestException ex)
@@ -40,7 +40,7 @@ namespace RickAndMorty.Controllers
         {
             try
             {
-                var result = await lr.GetLocationsByIDlist(list);
+                var result = await lr.GetByIDlist(list);
                 return Ok(result);
             }
             catch(HttpRequestException ex)
@@ -58,11 +58,11 @@ namespace RickAndMorty.Controllers
             }
         }
         [HttpGet("location-id")]
-        public async Task<IActionResult> LocationName(string name)
+        public async Task<IActionResult> LocationID(int id)
         {
             try
             {
-                var result = await lr.GetLocation(name);
+                var result = await lr.GetByID(id);
                 return Ok(result);
             }
             catch (HttpRequestException ex) 
@@ -76,12 +76,12 @@ namespace RickAndMorty.Controllers
                 return Content(ex.Message);
             }
         }
-        [HttpGet("location-name")]
-        public async Task<IActionResult> EpisodeID(int id)
+        [HttpGet("location-type")]
+        public async Task<IActionResult> LocationType(string type)
         {
             try
             {
-                var result = await lr.GetLocation(id);
+                var result = await lr.GetByType(type);
                 return Ok(result);
             }
             catch (HttpRequestException ex)
@@ -95,5 +95,44 @@ namespace RickAndMorty.Controllers
                 return Content(ex.Message);
             }
         }
+        [HttpGet("location-demension")]
+        public async Task<IActionResult> LocationDemesion(string demension)
+        {
+            try
+            {
+                var result = await lr.GetByDimension(demension);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text 
+                return Content(ex.Message);
+            }
+        }
+        [HttpGet("location-name")]
+        public async Task<IActionResult> LocationName(string name)
+        {
+            try
+            {
+                var result = await lr.GetByName(name);
+                return Ok(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                //return data from db
+                return Content(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                // return text 
+                return Content(ex.Message);
+            }
+        }
+
     }
 }
