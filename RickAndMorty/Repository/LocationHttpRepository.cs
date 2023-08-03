@@ -5,11 +5,11 @@ using RickAndMorty.Models;
 
 namespace RickAndMorty.Repository
 {
-    public class LocationRepository: ILocationRequester
+    public class LocationHttpRepository: ILocationRequester
     {
         string location_url = "https://rickandmortyapi.com/api/location";
         HttpClient httpClient = new HttpClient();
-        public LocationRepository(HttpClient httpClient)
+        public LocationHttpRepository(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }

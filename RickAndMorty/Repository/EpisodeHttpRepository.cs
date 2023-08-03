@@ -6,11 +6,11 @@ using RickAndMorty.Interfaces;
 
 namespace RickAndMorty.Repository
 {
-    public class EpisodeRepository: IEpisodeRequester
+    public class EpisodeHttpRepository: IEpisodeRequester
     {
         string episode_url = "https://rickandmortyapi.com/api/episode";
         HttpClient httpClient = new HttpClient();
-        public EpisodeRepository(HttpClient httpClient)
+        public EpisodeHttpRepository(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }

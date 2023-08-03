@@ -16,9 +16,11 @@ namespace RickAndMorty.Controllers
     public class LocationController : Controller
     {
         private ILocationRequester lr;
-        public LocationController(ILocationRequester lr)
+        private ILocationDB ldb;
+        public LocationController(ILocationRequester lr, ILocationDB ldb)
         {
             this.lr = lr;
+            this.ldb = ldb;
         }
 
         [HttpGet("all-locations")]
@@ -31,8 +33,8 @@ namespace RickAndMorty.Controllers
             }
             catch(HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await ldb.GetAll();
+                return Ok(res);
             }
         }
         [HttpPost("multiple-locations")]
@@ -45,8 +47,8 @@ namespace RickAndMorty.Controllers
             }
             catch(HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await ldb.GetByIDlist(list);
+                return Ok(res);
             }
             catch (ArgumentNullException ex)
             {
@@ -67,8 +69,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex) 
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await ldb.GetByID(id);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -86,8 +88,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await ldb.GetByType(type);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -105,8 +107,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await ldb.GetByDimension(demension);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -124,8 +126,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await ldb.GetByName(name);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {

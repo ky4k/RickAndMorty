@@ -25,9 +25,11 @@ namespace RickAndMorty.Controllers
     {
         
         private ICharacterRequester cr;
-        public CharacteerController(ICharacterRequester cr)
+        private ICharacterDB cdb;
+        public CharacteerController(ICharacterRequester cr, ICharacterDB cdb)
         {
             this.cr = cr;
+            this.cdb = cdb;
         }
 
         [HttpPost("multiple-characters")]
@@ -40,8 +42,9 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                //add log warn information
+                var res = await cdb.GetByIDlist(list);
+                return Ok(res);
             }
             catch (ArgumentNullException ex)
             {
@@ -63,8 +66,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await cdb.GetAll();
+                return Ok(res);
             }
         }
 
@@ -78,8 +81,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db looking on status code
-                return Content(ex.Message);
+                var res = await cdb.GetID(id);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -97,8 +100,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await cdb.GetByName(name);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -116,8 +119,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await cdb.GetCharacterStatus(name,status);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -135,8 +138,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await cdb.GetCharacterBySpecies(species);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -154,8 +157,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await cdb.GetCharacterByType(type);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -173,8 +176,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await cdb.GetCharacteGender(name, gender);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {

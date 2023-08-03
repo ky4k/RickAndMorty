@@ -12,9 +12,11 @@ namespace RickAndMorty.Controllers
     public class EpisodeController : Controller
     {
         private IEpisodeRequester er;
-        public EpisodeController(IEpisodeRequester er)
+        private IEpisodeDB edb;
+        public EpisodeController(IEpisodeRequester er, IEpisodeDB edb)
         {
             this.er = er;
+            this.edb = edb;
         }
 
         [HttpGet("all-episodes")]
@@ -28,8 +30,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await edb.GetAllEpisodes();
+                return Ok(res);
             }
         }
         [HttpPost("multiple-episodes")]
@@ -42,8 +44,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await edb.GetEpisodesByIDlist(list);
+                return Ok(res);
             }
             catch (ArgumentNullException ex)
             {
@@ -64,8 +66,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db
-                return Content(ex.Message);
+                var res = await edb.GetEpisodeByName(name);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -83,8 +85,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db looking on status code
-                return Content(ex.Message);
+                var res = await edb.GetEpisodeByID(id);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {
@@ -102,8 +104,8 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                //return data from db looking on status code
-                return Content(ex.Message);
+                var res = await edb.GetEpisodeByEpisode(episode);
+                return Ok(res);
             }
             catch (ArgumentException ex)
             {

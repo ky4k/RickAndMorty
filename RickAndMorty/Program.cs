@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using RickAndMorty.Interfaces;
 using RickAndMorty.Models;
 using RickAndMorty.Operations;
@@ -16,10 +17,12 @@ builder.Services.AddHttpClient();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 builder.Services.AddScoped<IDataOperation, DBclass>();
-builder.Services.AddScoped<ICharacterRequester, CharacterRepository>();
-builder.Services.AddScoped<ILocationRequester, LocationRepository>();
-builder.Services.AddScoped<IEpisodeRequester, EpisodeRepository>();
-
+builder.Services.AddScoped<ICharacterRequester, CharacteHttpRepository>();
+builder.Services.AddScoped<ICharacterDB, CharacterDbRepository>();
+builder.Services.AddScoped<ILocationRequester, LocationHttpRepository>();
+builder.Services.AddScoped<ILocationDB, LocationDbRepository>();
+builder.Services.AddScoped<IEpisodeRequester, EpisodeHttpRepository>();
+builder.Services.AddScoped<IEpisodeDB, EpisodeDbRepository>();
 
 var app = builder.Build();
 

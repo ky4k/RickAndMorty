@@ -8,11 +8,11 @@ using System.Reflection;
 
 namespace RickAndMorty.Repository
 {
-    public class CharacterRepository:ICharacterRequester
+    public class CharacteHttpRepository:ICharacterRequester
     {
         string character_url = "https://rickandmortyapi.com/api/character";
         HttpClient httpClient = new HttpClient();
-        public CharacterRepository(HttpClient httpClient)
+        public CharacteHttpRepository(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
