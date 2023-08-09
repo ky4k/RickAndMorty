@@ -32,9 +32,9 @@ namespace RickAndMorty.Repository
         }
         public async Task<List<Episode>> GetEpisodesByIDlist(List<int> listID) 
         {
-            if (listID == null) throw new ArgumentNullException("list is null");
-
-            var HasNegativeValue = listID.Any(x => x < 0);
+            if (listID.Count == 0 || listID.Contains(0)) throw new ArgumentNullException("list is null");
+            if (listID.Count <= 1) throw new Newtonsoft.Json.JsonSerializationException("List contains less then one value");
+            var HasNegativeValue = listID.Any(x => x <= 0);
             if (HasNegativeValue) throw new ArgumentException("list has negative value");
 
             List<int> numbers = listID;

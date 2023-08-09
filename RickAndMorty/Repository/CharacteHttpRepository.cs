@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace RickAndMorty.Repository
 {
-    public class CharacteHttpRepository:ICharacterRequester
+    public class CharacteHttpRepository : ICharacterRequester
     {
         string character_url = "https://rickandmortyapi.com/api/character";
         HttpClient httpClient = new HttpClient();
@@ -34,16 +34,15 @@ namespace RickAndMorty.Repository
         }
         public async Task<List<Character>> GetByIDlist(List<int> listID)
         {
-            if (listID == null) throw new ArgumentNullException("list is null");
-
-            var HasNegativeValue=listID.Any(x => x < 0);
+            if (listID.Count == 0 || listID.Contains(0)) throw new ArgumentNullException("list is null");
+            if (listID.Count <= 1) throw new Newtonsoft.Json.JsonSerializationException("List contains less then one value");
+            var HasNegativeValue = listID.Any(x => x <= 0);
             if (HasNegativeValue) throw new ArgumentException("list has negative value");
 
             List<int> numbers = listID;
             string numbersString = string.Join(",", numbers);
             string url = $"{character_url}/{numbersString}";
             HttpResponseMessage response = await httpClient.GetAsync(url);//GET request and get response
-
             if (response.IsSuccessStatusCode)
             {
                 string Response = await response.Content.ReadAsStringAsync();//convert in string type
@@ -53,9 +52,9 @@ namespace RickAndMorty.Repository
             else
                 throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
         }
-        public async Task<Character>GetID(int id)
+        public async Task<Character> GetID(int id)
         {
-            if(id<0) throw new ArgumentException("id must be more then 0");
+            if (id <= 0) throw new ArgumentException("id must be more then 0");
 
             string url = $"{character_url}/{id}";
             HttpResponseMessage response = await httpClient.GetAsync(url);//GET request and get response
@@ -71,8 +70,9 @@ namespace RickAndMorty.Repository
         }
         public async Task<List<Character>> GetByName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name cannot be empty.", nameof(name));
+            if (String.IsNullOrWhiteSpace(name))
+                throw new System.ArgumentException("Name cannot be empty.", nameof(name));
+            if (string.IsNullOrEmpty(name)) throw new System.ArgumentNullException("string is null");
 
             string url = $"{character_url}/?name={name}";
             HttpResponseMessage response = await httpClient.GetAsync(url);//GET request and get response

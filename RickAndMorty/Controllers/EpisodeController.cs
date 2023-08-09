@@ -13,10 +13,15 @@ namespace RickAndMorty.Controllers
     {
         private IEpisodeRequester er;
         private IEpisodeDB edb;
-        public EpisodeController(IEpisodeRequester er, IEpisodeDB edb)
+        private ILogger _logger;
+        private ILogger _argumentLogger;
+        public EpisodeController(IEpisodeRequester er, IEpisodeDB edb, ILogger<EpisodeController> logger
+            , ILoggerFactory loggerFactory)
         {
             this.er = er;
             this.edb = edb;
+            _logger = logger;
+            _argumentLogger = loggerFactory.CreateLogger("ArgumentLogger");
         }
 
         [HttpGet("all-episodes")]
@@ -24,13 +29,14 @@ namespace RickAndMorty.Controllers
         {
             try
             {
-
                 var result = await er.GetAllEpisodes();
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await edb.GetAllEpisodes();
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
         }
@@ -40,20 +46,29 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await er.GetEpisodesByIDlist(list);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await edb.GetEpisodesByIDlist(list);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentNullException ex)
             {
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("List is empty or contains null");
             }
             catch (ArgumentException ex)
             {
+                _argumentLogger.LogWarning(ex.Message);
                 return Content(ex.Message);
+            }
+            catch (Newtonsoft.Json.JsonSerializationException ex)
+            {
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("List contains less then one value");
             }
         }
         [HttpGet("episode-name")]
@@ -62,17 +77,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await er.GetEpisodeByName(name);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await edb.GetEpisodeByName(name);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text bed news
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
         [HttpPost("episode-id")]
@@ -81,17 +98,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await er.GetEpisodeByID(id);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await edb.GetEpisodeByID(id);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text 
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
         [HttpPost("episode")]
@@ -100,17 +119,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await er.GetEpisodeByEpisode(episode);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await edb.GetEpisodeByEpisode(episode);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text 
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
     }

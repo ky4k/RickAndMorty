@@ -18,7 +18,6 @@ namespace RickAndMorty.Controllers
         public async Task UpdateDB()
         {
             await db.UpdateData();
-
         }
     }
 }

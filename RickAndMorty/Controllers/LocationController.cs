@@ -8,6 +8,7 @@ using RickAndMorty.Models;
 using RickAndMorty.Operations;
 using System.Collections.Generic;
 using System.Net.Http;
+using Microsoft.Extensions.Logging;
 
 namespace RickAndMorty.Controllers
 {
@@ -17,10 +18,15 @@ namespace RickAndMorty.Controllers
     {
         private ILocationRequester lr;
         private ILocationDB ldb;
-        public LocationController(ILocationRequester lr, ILocationDB ldb)
+        private ILogger _logger;
+        private ILogger _argumentLogger;
+        public LocationController(ILocationRequester lr, ILocationDB ldb, ILogger<LocationController> log
+            , ILoggerFactory loggerFactory)
         {
             this.lr = lr;
             this.ldb = ldb;
+            this._logger = log;
+            _argumentLogger = loggerFactory.CreateLogger("ArgumentLogger");
         }
 
         [HttpGet("all-locations")]
@@ -29,10 +35,12 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await lr.GetAll();
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch(HttpRequestException ex)
             {
+                _logger.LogError(ex.Message, "Get data from data base");
                 var res = await ldb.GetAll();
                 return Ok(res);
             }
@@ -43,20 +51,29 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await lr.GetByIDlist(list);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch(HttpRequestException ex)
             {
                 var res = await ldb.GetByIDlist(list);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentNullException ex)
             {
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Episodes' list is empty");
             }
             catch (ArgumentException ex)
             {
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
+            }
+            catch (Newtonsoft.Json.JsonSerializationException ex)
+            {
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("List contains less then one value");
             }
         }
         [HttpGet("location-id")]
@@ -65,17 +82,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await lr.GetByID(id);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex) 
             {
                 var res = await ldb.GetByID(id);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text bed news
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
         [HttpGet("location-type")]
@@ -84,17 +103,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await lr.GetByType(type);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await ldb.GetByType(type);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text 
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
         [HttpGet("location-demension")]
@@ -103,17 +124,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await lr.GetByDimension(demension);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await ldb.GetByDimension(demension);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text 
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
         [HttpGet("location-name")]
@@ -122,17 +145,19 @@ namespace RickAndMorty.Controllers
             try
             {
                 var result = await lr.GetByName(name);
+                _logger.LogInformation("Get data from API");
                 return Ok(result);
             }
             catch (HttpRequestException ex)
             {
                 var res = await ldb.GetByName(name);
+                _logger.LogError(ex.Message, "Get data from data base");
                 return Ok(res);
             }
             catch (ArgumentException ex)
             {
-                // return text 
-                return Content(ex.Message);
+                _argumentLogger.LogWarning(ex.Message);
+                return Content("Name cannot be empty");
             }
         }
 
