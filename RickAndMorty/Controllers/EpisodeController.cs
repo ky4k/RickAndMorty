@@ -92,7 +92,7 @@ namespace RickAndMorty.Controllers
                 return Content("Name cannot be empty");
             }
         }
-        [HttpPost("episode-id")]
+        [HttpGet("episode-id")]
         public async Task<IActionResult> EpisodeID(int id)
         {
             try
@@ -113,7 +113,7 @@ namespace RickAndMorty.Controllers
                 return Content("Name cannot be empty");
             }
         }
-        [HttpPost("episode")]
+        [HttpGet("episode")]
         public async Task<IActionResult> Episode(string episode)
         {
             try

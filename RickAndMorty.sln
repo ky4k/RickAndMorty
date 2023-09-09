@@ -5,10 +5,12 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickAndMorty", "RickAndMorty\RickAndMorty.csproj", "{B390D9F8-6495-4428-8833-8D250B176A12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RickAndMortyTests", "RickAndMortyTests\RickAndMortyTests.csproj", "{C82CC47A-2278-455D-A5A4-6731CC02ADFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickAndMortyTests", "RickAndMortyTests\RickAndMortyTests.csproj", "{C82CC47A-2278-455D-A5A4-6731CC02ADFD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B390D9F8-6495-4428-8833-8D250B176A12} = {B390D9F8-6495-4428-8833-8D250B176A12}
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{22A3A0CD-B183-4773-A903-12F2EF4E48AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{C82CC47A-2278-455D-A5A4-6731CC02ADFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C82CC47A-2278-455D-A5A4-6731CC02ADFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C82CC47A-2278-455D-A5A4-6731CC02ADFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22A3A0CD-B183-4773-A903-12F2EF4E48AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22A3A0CD-B183-4773-A903-12F2EF4E48AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22A3A0CD-B183-4773-A903-12F2EF4E48AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22A3A0CD-B183-4773-A903-12F2EF4E48AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

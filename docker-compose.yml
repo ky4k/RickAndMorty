@@ -1,0 +1,32 @@
+version: '3.4'
+networks:
+  rickandmorty:
+
+services:
+  db:
+    container_name: db
+    volumes:
+      - sql_data:/var/lib/sqlserver/data/
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=password@12345#FDS
+    networks:
+      - rickandmorty
+  rickandmorty:
+    container_name: rickandmorty-app
+    image: ${DOCKER_REGISTRY-}rickandmorty
+    build:
+      context: .
+      dockerfile: RickAndMorty/Dockerfile
+    ports:
+      - 8599:80
+    depends_on:
+      - db
+    networks:
+      - rickandmorty
+volumes:
+  sql_data:
+ 
