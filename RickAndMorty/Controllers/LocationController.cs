@@ -40,9 +40,16 @@ namespace RickAndMorty.Controllers
             }
             catch(HttpRequestException ex)
             {
-                _logger.LogError(ex.Message, "Get data from data base");
-                var res = await ldb.GetAll();
-                return Ok(res);
+                try
+                {
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    var res = await ldb.GetAll();
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
         }
         [HttpPost("multiple-locations")]
@@ -56,9 +63,16 @@ namespace RickAndMorty.Controllers
             }
             catch(HttpRequestException ex)
             {
-                var res = await ldb.GetByIDlist(list);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await ldb.GetByIDlist(list);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentNullException ex)
             {
@@ -87,9 +101,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex) 
             {
-                var res = await ldb.GetByID(id);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await ldb.GetByID(id);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -108,9 +129,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await ldb.GetByType(type);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await ldb.GetByType(type);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -129,9 +157,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await ldb.GetByDimension(demension);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await ldb.GetByDimension(demension);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -150,9 +185,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await ldb.GetByName(name);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await ldb.GetByName(name);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {

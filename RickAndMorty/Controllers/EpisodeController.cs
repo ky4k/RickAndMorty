@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using RickAndMorty.Interfaces;
 using RickAndMorty.Models;
 using RickAndMorty.Operations;
+using System.Collections.Generic;
 
 namespace RickAndMorty.Controllers
 {
@@ -35,9 +36,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await edb.GetAllEpisodes();
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await edb.GetAllEpisodes();
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
         }
         [HttpPost("multiple-episodes")]
@@ -51,9 +59,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await edb.GetEpisodesByIDlist(list);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await edb.GetEpisodesByIDlist(list);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentNullException ex)
             {
@@ -82,9 +97,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await edb.GetEpisodeByName(name);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await edb.GetEpisodeByName(name);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -103,9 +125,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await edb.GetEpisodeByID(id);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await edb.GetEpisodeByID(id);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -124,9 +153,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await edb.GetEpisodeByEpisode(episode);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await edb.GetEpisodeByEpisode(episode);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {

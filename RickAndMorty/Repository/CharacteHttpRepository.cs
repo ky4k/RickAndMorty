@@ -36,8 +36,8 @@ namespace RickAndMorty.Repository
         {
             if (listID.Count == 0 || listID.Contains(0)) throw new ArgumentNullException("list is null");
             if (listID.Count <= 1) throw new Newtonsoft.Json.JsonSerializationException("List contains less then one value");
-            var HasNegativeValue = listID.Any(x => x <= 0);
-            if (HasNegativeValue) throw new ArgumentException("list has negative value");
+            var HasNegativeValue = listID.Any(x => x <=0);
+            if (HasNegativeValue) throw new Newtonsoft.Json.JsonSerializationException("list has negative value");
 
             List<int> numbers = listID;
             string numbersString = string.Join(",", numbers);
@@ -85,6 +85,10 @@ namespace RickAndMorty.Repository
                 var result = JsonConvert.DeserializeObject<List<Character>>(resultsArray);
                 return result;
             }
+            //if (response.StatusCode = 404)
+            //{
+            //    throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
+            //}
             else
                 throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
         }

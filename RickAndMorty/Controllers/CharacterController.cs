@@ -40,7 +40,7 @@ namespace RickAndMorty.Controllers
         }
 
         [HttpPost("multiple-characters")]
-        public async Task<IActionResult> ListSomeCharacters(List<int> list)//ИСКЛЮЧЕНИЕ: НУЖНО ОБЯЗАТКЛЬНО ВСТАВЛЯТЬ БОЛЬШЕ 1 ЗНАЧЕНИЯ
+        public async Task<IActionResult> ListSomeCharacters(List<int> list)
         {
             try
             {
@@ -50,9 +50,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetByIDlist(list);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetByIDlist(list);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentNullException ex)
             {
@@ -81,10 +88,17 @@ namespace RickAndMorty.Controllers
                 return Ok(result);
             }
             catch (HttpRequestException ex)
-            {
-                var res = await cdb.GetAll();
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+            {;
+                try
+                {
+                    var res = await cdb.GetAll();
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
         }
 
@@ -99,9 +113,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetID(id);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetID(id);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -120,9 +141,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetByName(name);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetByName(name);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (System.ArgumentNullException ex)
             {
@@ -147,9 +175,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetCharacterStatus(name,status);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetCharacterStatus(name, status);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -168,9 +203,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetCharacterBySpecies(species);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetCharacterBySpecies(species);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -189,9 +231,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetCharacterByType(type);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetCharacterByType(type);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res);
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -210,9 +259,16 @@ namespace RickAndMorty.Controllers
             }
             catch (HttpRequestException ex)
             {
-                var res = await cdb.GetCharacteGender(name, gender);
-                _logger.LogError(ex.Message, "Get data from data base");
-                return Ok(res);
+                try
+                {
+                    var res = await cdb.GetCharacteGender(name, gender);
+                    _logger.LogError(ex.Message, "Get data from data base");
+                    return Ok(res); ;
+                }
+                catch (ArgumentNullException)
+                {
+                    return NotFound("The resource in the application was not found");
+                }
             }
             catch (ArgumentException ex)
             {

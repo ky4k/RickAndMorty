@@ -39,7 +39,7 @@ namespace RickAndMorty.Repository
         }
         public async Task<Character> GetID(int id)
         {
-            if (id < 0) throw new ArgumentException("id must be more then 0");
+            if (id <= 0) throw new ArgumentException("id must be more then 0");
             var character = await db.Characters.Where(c=>c.id== id).FirstOrDefaultAsync();
             if (!(character is null))
                 return character;
