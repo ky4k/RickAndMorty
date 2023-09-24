@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using RickAndMorty.Interfaces;
 using RickAndMorty.Models;
 using System.Collections;
@@ -13,17 +14,20 @@ namespace RickAndMorty.Operations
         ICharacterRequester character_requester;
         ILocationRequester location_requester;
         IEpisodeRequester episode_requester;
+        IDistributedCache cache;
         public DBclass() { }
-        public DBclass(ApplicationContext ap)
+        public DBclass(ApplicationContext ap, IDistributedCache cache)
         {
             this.ap = ap;
+            this.cache = cache;
         }
         public DBclass(ICharacterRequester character_requester, ILocationRequester location_requester,
-            IEpisodeRequester episode_requester) 
+            IEpisodeRequester episode_requester, IDistributedCache cache) 
         {
             this.character_requester = character_requester;
             this.episode_requester = episode_requester;
             this.location_requester = location_requester;
+            this.cache=cache;
         }
         public DBclass(ICharacterRequester character_requester, ILocationRequester location_requester,
             IEpisodeRequester episode_requester, ApplicationContext ap)
@@ -34,6 +38,7 @@ namespace RickAndMorty.Operations
             this.ap = ap;
         }
         //Work
+
         public async Task UpdateData()
         {
             var character_response = await character_requester.GetAll();

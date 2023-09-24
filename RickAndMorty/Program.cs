@@ -33,7 +33,12 @@ try
     builder.Services.AddScoped<ILocationDB, LocationDbRepository>();
     builder.Services.AddScoped<IEpisodeRequester, EpisodeHttpRepository>();
     builder.Services.AddScoped<IEpisodeDB, EpisodeDbRepository>();
-
+    //add caching
+    builder.Services.AddStackExchangeRedisCache(options => {
+        string connection = builder.Configuration
+            .GetConnectionString("Redis");
+        options.Configuration = connection;
+    });
     var app = builder.Build();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
